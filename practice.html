@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Array and Object</title>
+</head>
+<body>
+
+</body>
+<script>
+    //input
+    let step = true
+    let student_list = []
+    while (step){
+        let name = prompt('Enter Student name: ')
+        let subject = []
+        for (let i = 0; i< 5; i++){
+            let sub_name = prompt(`Enter subject ${i+1} name: `)
+            let sub_score = prompt(`Enter score ${i+1} score: `)
+            subject.push(
+                {
+                    name: sub_name,
+                    score: sub_score,
+                }
+            )
+        }
+        student_list.push(
+            {
+                student_name: name,
+                subject: subject
+            }
+        )
+        let promp = prompt('Do you want to add more student? (Y/N): ')
+        if ((promp.trim()).toLowerCase() === 'y'){
+            step = true
+        }else {
+            step = false
+        }
+    }
+
+    //calculate
+    let result = []
+    for (let student of student_list){
+        //total score
+        let total_score = 0
+        for (let subject of student.subject){
+            total_score += parseFloat(subject.score)
+        }
+        result.push(
+            {
+                name: student.student_name,
+                total_score: total_score,
+                subject: student.subject
+            }
+        )
+    }
+     console.table(result)
+</script>
+</html>

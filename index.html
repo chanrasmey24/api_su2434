@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>basic js</title>
+</head>
+<body>
+<center>
+    <h1>Hello</h1>
+</center>
+</body>
+<script>
+    let name = prompt("Enter your name: ")
+    while (name.trim() == ''){
+        name = prompt("Enter your name again: ")
+    }
+    let year_of_birth = prompt("Enter your yob: ")
+    while (parseInt(year_of_birth) < 2000){
+        year_of_birth = prompt("Enter your yob again (min:2000): ")
+    }
+    let age = 2025 - year_of_birth
+    let gender = prompt("Enter your gender (male/female): ")
+    while (!(gender.trim() == 'male' || gender.trim() == 'female')){
+        gender = prompt("Enter your gender again (male/female): ")
+    }
+    console.log(`Name: ${name} (${gender}) Age is (${age}) `)
+</script>
+</html>

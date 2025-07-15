@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Array and Object</title>
+</head>
+<body>
+
+</body>
+<script>
+    //{   |array+loop|
+    //array (index, element)
+    //stack algorithms (push(), pop())
+    //Linked list (dynamic size)
+    // pop(), push(), shift(), length, splice
+
+    // student_list.push('gods')  // + pi kroy
+    // student_list.pop()    // - pi kroy
+    // student_list.shift()  // - pi muk
+    // student_list.splice(1,1)    // - splice(index[],element)
+    // console.log(student_list.length)  // student_list.length = rk element bos index
+    // let student_list = ['first','second','third']
+    // for (let i =0; i<student_list.length; i++){
+    //     console.log(student_list[i])
+    // }
+    //
+    // for (let item of student_list){
+    //     console.log(item)
+    // }
+    //
+    // student_list.forEach(item=>{
+    //     console.log(item)
+    // })
+    //
+    // let index = 0
+    // while (index < student_list.length){
+    //     console.log(student_list[index])
+    //     index++
+    // }
+    //}
+
+    //{  |object|
+    let student_name = 'first'
+    let student_gender = 'male'
+    let student_group = 'SU24.34'
+    let student_age = 20
+
+    // let student1 = {
+    //     name : 'first',
+    //     gender: 'male',
+    //     group: 'SU34',
+    //     age: 20
+    // }
+    // console.log(student1)
+    // student1.name = 'second'
+    // delete student1.age      // delete obj
+    // student1.address = 'pp'  // add new obj
+    // console.log(student1)
+    // }
+    //{
+    // |array object|
+    let su24_34_student = [
+        {
+            name : 'first',
+            gender: 'male',
+            group: 'SU34',
+            age: 20
+        },
+        {
+            name : 'second',
+            gender: 'female',
+            group: 'SU34',
+            age: 18
+        },
+        {
+            name : 'third',
+            gender: 'male',
+            group: 'SU34',
+            age: 22
+        }
+    ]
+    for (let student of su24_34_student){
+        console.log(`Name: ${student.name}`)
+        console.log(`Gender: ${student.gender}`)
+        console.log(`Age: ${student.age}`)
+        console.log(`Group: ${student.group}`)
+        console.log('----------------------')
+    }
+    //}
+</script>
+</html>

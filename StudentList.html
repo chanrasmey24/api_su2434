@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Registration</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Calibri b', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .main-wrapper {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .form-container {
+            flex: 2;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .list-container {
+            flex: 3;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .form-container h2, .list-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #5a2d98;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: #444;
+        }
+
+        input[type="text"], input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-weight: bold;
+            font-size: 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        #cancelBtn {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+
+        #cancelBtn:hover {
+            background-color: #c0392b;
+        }
+
+        #saveBtn {
+            background-color: green;
+            color: #fff;
+        }
+
+        #saveBtn:hover {
+            background-color: #5a4bd1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        th {
+            background-color: #632ea6;
+            color: #fff;
+        }
+
+        td img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .action-buttons button {
+            margin-right: 5px;
+            padding: 6px 10px;
+            font-size: 16px;
+        }
+
+        .action-buttons button:hover {
+            opacity: 0.8;
+        }
+
+        a {
+            align-content: flex-end;
+        }
+
+        .next-page {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+
+    <div class="form-container">
+        <h2>Register Form</h2>
+
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" placeholder="Enter Name ...">
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Enter email ...">
+        </div>
+
+        <div class="form-group">
+            <label for="profile">Profile:</label>
+            <input type="text" id="profile" placeholder="Enter Image URL ...">
+        </div>
+
+        <div class="buttons">
+            <button id="cancelBtn">Cancel</button>
+            <button id="saveBtn">Save</button>
+        </div>
+    </div>
+
+    <div class="list-container">
+        <h2>Student List</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>Profile</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody id="studentList">
+
+            </tbody>
+        </table>
+        <a href="page2.html" class="next-page" >View Full Student List →</a>
+    </div>
+</div>
+
+<script>
+
+    let nameInput = document.getElementById('name');
+    let emailInput = document.getElementById('email');
+    let profileInput = document.getElementById('profile');
+    let saveBtn = document.getElementById('saveBtn');
+    let cancelBtn = document.getElementById('cancelBtn');
+    let studentList = document.getElementById('studentList');
+
+    let students = JSON.parse(localStorage.getItem('students')) ?? [];
+    let editIndex = null;
+
+    renderStudents();
+
+    saveBtn.addEventListener('click', saveStudent);
+    cancelBtn.addEventListener('click', clearForm);
+
+    function saveStudent() {
+        let name = nameInput.value.trim();
+        let email = emailInput.value.trim();
+        let profile = profileInput.value.trim();
+
+        if (!name || !email) {
+            alert('Please fill in name and email fields!');
+            return;
+        }
+
+        let student = {
+            name: name,
+            email: email,
+            profile: profile || 'https://via.placeholder.com/50'
+        };
+
+        if (editIndex === null) {
+
+            students.push(student);
+        } else {
+
+            students[editIndex] = student;
+            editIndex = null;
+            saveBtn.textContent = 'Save';
+        }
+
+        localStorage.setItem('students', JSON.stringify(students));
+
+        renderStudents();
+        clearForm();
+    }
+
+    function renderStudents() {
+        studentList.innerHTML = '';
+
+        for (let i = 0; i < students.length; i++) {
+            let student = students[i];
+            let row = document.createElement('tr');
+
+            row.innerHTML = `
+        <td>${i + 1}</td>
+        <td><img src="${student.profile}" alt="Profile" width="50" height="50" style="object-fit: cover; border-radius: 50%;"></td>
+        <td>${student.name}</td>
+        <td>${student.email}</td>
+        <td>
+          <button onclick="editStudent(${i})">📝</button>
+          <button onclick="deleteStudent(${i})">❌</button>
+        </td>
+      `;
+            studentList.appendChild(row);
+        }
+    }
+
+    function deleteStudent(index) {
+        if (confirm('Are you sure you want to delete this student?')) {
+            students.splice(index, 1);
+            localStorage.setItem('students', JSON.stringify(students));
+            renderStudents();
+        }
+    }
+
+    function editStudent(index) {
+        let student = students[index];
+        nameInput.value = student.name;
+        emailInput.value = student.email;
+        profileInput.value = student.profile;
+        editIndex = index;
+        saveBtn.textContent = 'Update';
+        nameInput.focus();
+    }
+
+    function clearForm() {
+        nameInput.value = '';
+        emailInput.value = '';
+        profileInput.value = '';
+        editIndex = null;
+        saveBtn.textContent = 'Save';
+    }
+</script>
+</body>
+</html>

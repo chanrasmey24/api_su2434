@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student List</title>
+    <style>
+        body {
+            font-family: 'Calibri b', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background-color: #f8f9fa;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #632ea6;
+            margin-bottom: 30px;
+        }
+        #studentsContainer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .student {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 200px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .student img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid #f1f1f1;
+        }
+        .name {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: #2d3436;
+        }
+        .email {
+            color: #555;
+            font-size: 14px;
+            word-break: break-word;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+<h1>Student List</h1>
+<div id="studentsContainer"></div>
+<a href="StudentList.html" class="back-link">← Back to Registration Form</a>
+
+<script>
+
+    let students = JSON.parse(localStorage.getItem('students')) || [];
+    let container = document.getElementById('studentsContainer');
+
+    students.forEach(student => {
+        let studentDiv = document.createElement('div');
+        studentDiv.className = 'student';
+        studentDiv.innerHTML = `
+                <img src="${student.profile || 'https://via.placeholder.com/80'}" alt="Profile">
+                <div class="name">${student.name}</div>
+                <div class="email">${student.email}</div>
+            `;
+        container.appendChild(studentDiv);
+    });
+</script>
+</body>
+</html>

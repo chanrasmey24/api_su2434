@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DOM</title>
+</head>
+<style>
+  ul {
+    list-style-type: none;
+  }
+  ul li {
+    font-size: 20px;
+    font-weight: bolder;
+    margin-bottom: 5px;
+  }
+
+  .doneTask{
+    color: whitesmoke;
+    background-color: hotpink;
+    border-radius: 4px;
+  }
+</style>
+<body>
+<center>
+  <h1 id="label">Todo App</h1>
+  <br>
+  <label for="input_text">Task: </label>
+  <input type="text" id="input_text">
+  <input type="button" value="Submit" id="btn_submit">
+  <hr>
+  <ul id="std_list"></ul>
+</center>
+</body>
+<script>
+  let input_text = document.getElementById('input_text')
+  let btn_submit = document.getElementById('btn_submit')
+  let std_list = document.getElementById('std_list')
+  let global_index = null
+
+  let arr_task = []
+  btn_submit.addEventListener('click', function () {
+    if (global_index == null){
+      arr_task.push(
+              {
+                name: input_text.value,
+                is_done: false
+              }
+      )
+    }else {
+      arr_task[global_index].name = input_text.value
+    }
+    //set data localStorage
+    localStorage.setItem('arr_task', JSON.stringify(arr_task))
+
+    //renderTask
+    renderTask()
+
+    //clear form
+    input_text.value = ''
+    input_text.focus()
+    global_index = null
+    btn_submit.value = 'Submit'  // after edit return to submit btn
+  })
+
+  function renderTask() {
+    std_list.innerHTML = ''
+    let count = 0
+    for (let item of arr_task){
+      let new_li = document.createElement('li')
+      let task = `<span>${count + 1}. ${item.name}</span>`
+      let btn_done = ` <input onclick="makeItemDone(${count})" type="button" value="✅">`
+      if (item.is_done){
+        task = `<del class="doneTask">${count + 1}. ${item.name}</del>`
+        btn_done = ''
+      }
+      new_li.innerHTML = `
+              ${task}
+              ${btn_done}
+              <input onclick="getEdit(${count} )" " type="button" value="📝">
+              <input onclick="deleteItem(${count})" type="button" value="❌">
+            `
+      std_list.appendChild(new_li)
+      count++
+    }
+  }
+
+  function deleteItem(index) {
+    if (confirm("do you want to delete ?")){
+      arr_task.splice(index, 1)
+      renderTask()
+    }
+  }
+
+  function makeItemDone(index) {
+    arr_task[index].is_done = true
+    console.log(arr_task)
+    renderTask()
+  }
+
+  function getEdit(index) {
+    global_index = index
+    let current_task = arr_task[index]
+    input_text.value = current_task.name
+    btn_submit.value = "Edit"
+  }
+</script>
+</html>
